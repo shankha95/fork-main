@@ -23,58 +23,76 @@ import cpuHeavyImage from './assets/cpu_heavy_workload.png';
 import axios from 'axios';
 import { useState } from 'react';
 
-const baseURL = "http://192.168.2.52:4000"
+const baseURL = "http://192.168.2.125:4000"
 
 function App() {
-  const [maliciousSingleClusterPlot, setMaliciousSingleClusterPlot] = useState<string | null>(null)
-  const [maliciousMultiClusterPlot, setMaliciousMultiClusterPlot] = useState<string | null>(null)
-  
-  const [maliciousSingleClusterLoading, setMaliciousSingleClusterLoading] = useState(false)
-  const [maliciousMultiClusterLoading, setMaliciousMultiClusterLoading] = useState(false)
-  
+  const [singleClusterPlot, setSingleClusterPlot] = useState<string | null>(null)
+  const [multiClusterPlot, setMultiClusterPlot] = useState<string | null>(null)
+
+  const [singleClusterLoading, setSingleClusterLoading] = useState(false)
+  const [multiClusterLoading, setMultiClusterLoading] = useState(false)
+
   const maliciousSingleClusterClickHandler = async () => {
-    setMaliciousSingleClusterLoading(true)
-    const res = await axios.post(`${baseURL}/attack/malicious/single`)
+    setSingleClusterLoading(true)
+    const res = await axios.post(`${baseURL}/attack/maliciousSingleCluster`)
     if (res.status === 200) {
-      setMaliciousSingleClusterPlot(res.data['file'])
+      setSingleClusterPlot(res.data['file'])
     }
-    setMaliciousSingleClusterLoading(false)
+    setSingleClusterLoading(false)
   }
-  
-  const maliciousMultiClusterClickHandler = async () => {
-    setMaliciousMultiClusterLoading(true)
-    const res = await axios.post(`${baseURL}/attack/malicious/multi`)
+
+  const multiClusterClickHandler = async () => {
+    setMultiClusterLoading(true)
+    const res = await axios.post(`${baseURL}/attack/multiCluster`)
     if (res.status === 200) {
-      setMaliciousMultiClusterPlot(res.data['file'])
+      setMultiClusterPlot(res.data['file'])
     }
-    setMaliciousMultiClusterLoading(false)
+    setMultiClusterLoading(false)
   }
-  
+
   return (
     <MantineProvider>
       <Flex direction='column' gap='lg' py='md'>
         <Title order={2} ml='4rem'>FORK</Title>
-  
+
         <Flex direction='row' w='100%'>
           <Flex direction='column' gap='xl' mr='6rem'>
             <Image radius='sm' h={250} w='auto' fit='contain' src={testingScenarioImage} />
             <Image radius='sm' h={400} w='auto' fit='contain' src={operatorImage} />
+
+            <Image radius='sm' h={300} w='auto' fit='contain' src={cpuLightImage} />
+            <Image radius='sm' h={300} w='auto' fit='contain' src={cpuHeavyImage} />
           </Flex>
-  
+
           <Flex direction='column' mt='4rem'>
-            <Button loading={maliciousSingleClusterLoading} onClick={maliciousSingleClusterClickHandler}>
-              Malicious Single Cluster
-            </Button>
-            {maliciousSingleClusterPlot && <NavLink href={`${baseURL}/plot/${maliciousSingleClusterPlot}`} target="_blank" rel="noopener" label='Show plot' />}
-  
-            <Button loading={maliciousMultiClusterLoading} onClick={maliciousMultiClusterClickHandler}>
-              Malicious Multi Cluster
-            </Button>
-            {maliciousMultiClusterPlot && <NavLink href={`${baseURL}/plot/${maliciousMultiClusterPlot}`} target="_blank" rel="noopener" label='Show plot' />}
+            <Flex direction='column' mb='3.5rem' gap='lg'>
+              <Button
+                loading={singleClusterLoading}
+                onClick={maliciousSingleClusterClickHandler}>
+                Malicious Single Cluster
+              </Button>
+
+              {
+                singleClusterPlot &&
+                  <NavLink href={`${baseURL}/plot/${singleClusterPlot}`} target="_blank" rel="noopener" label='Show plot' />
+              }
+            </Flex>
+
+            <Flex direction='column' gap='lg'>
+              <Button loading={multiClusterLoading} onClick={multiClusterClickHandler}>
+                Multi Cluster
+              </Button>
+
+              {
+                multiClusterPlot &&
+                  <NavLink href={`${baseURL}/plot/${multiClusterPlot}`} target="_blank" rel="noopener" label='Show plot' />
+              }
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
     </MantineProvider>
-  )
-  
+  ) 
+}
+
 export default App

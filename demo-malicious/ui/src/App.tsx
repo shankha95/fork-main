@@ -29,10 +29,9 @@ function App() {
   const [maliciousSingleClusterPlot, setMaliciousSingleClusterPlot] = useState<string | null>(null)
   const [maliciousMultiClusterPlot, setMaliciousMultiClusterPlot] = useState<string | null>(null)
   
-
   const [maliciousSingleClusterLoading, setMaliciousSingleClusterLoading] = useState(false)
   const [maliciousMultiClusterLoading, setMaliciousMultiClusterLoading] = useState(false)
-
+  
   const maliciousSingleClusterClickHandler = async () => {
     setMaliciousSingleClusterLoading(true)
     const res = await axios.post(`${baseURL}/attack/malicious/single`)
@@ -63,16 +62,6 @@ function App() {
           </Flex>
   
           <Flex direction='column' mt='4rem'>
-            <Button loading={singleClusterLoading} onClick={singleClusterClickHandler}>
-              Vegeta (Single cluster)
-            </Button>
-            {singleClusterPlot && <NavLink href={`${baseURL}/plot/${singleClusterPlot}`} target="_blank" rel="noopener" label='Show plot' />}
-  
-            <Button loading={multiClusterLoading} onClick={multiClusterClickHandler}>
-              Vegeta (Multi cluster)
-            </Button>
-            {multiClusterPlot && <NavLink href={`${baseURL}/plot/${multiClusterPlot}`} target="_blank" rel="noopener" label='Show plot' />}
-  
             <Button loading={maliciousSingleClusterLoading} onClick={maliciousSingleClusterClickHandler}>
               Malicious Single Cluster
             </Button>
@@ -87,5 +76,5 @@ function App() {
       </Flex>
     </MantineProvider>
   )
-
+  
 export default App

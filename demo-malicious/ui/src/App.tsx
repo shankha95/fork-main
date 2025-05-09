@@ -23,7 +23,7 @@ import cpuHeavyImage from './assets/cpu_heavy_workload.png';
 import axios from 'axios';
 import { useState } from 'react';
 
-const baseURL = "http://192.168.2.125:4000"
+const baseURL = "http://192.168.2.52:4000"
 
 function App() {
   const [singleClusterPlot, setSingleClusterPlot] = useState<string | null>(null)
@@ -69,7 +69,7 @@ function App() {
               <Button
                 loading={singleClusterLoading}
                 onClick={maliciousSingleClusterClickHandler}>
-                Malicious Single Cluster
+                Vegeta(Malicious Single Cluster)
               </Button>
 
               {
@@ -80,7 +80,7 @@ function App() {
 
             <Flex direction='column' gap='lg'>
               <Button loading={multiClusterLoading} onClick={multiClusterClickHandler}>
-                Multi Cluster
+                Vegeta(Malicious Multi Cluster)
               </Button>
 
               {
